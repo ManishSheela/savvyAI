@@ -34,12 +34,10 @@ model Domain {
   id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name String
   icon String
-
   chatBot         ChatBot?
   helpdesk        HelpDesk[]
   filterQuestions FilterQuestions[]
   products        Product[]
-
   customer   Customer[]
   User       User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String?    @db.Uuid

@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-page-custom-font */
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +20,16 @@ export default function RootLayout({
 	return (
 		<ClerkProvider>
 			<html lang="en">
-				<body className={inter.className}>{children}</body>
+				<head>
+					<link
+						href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,700,0,0&display=swap"
+						rel="stylesheet"
+					/>
+				</head>
+				<body className={inter.className}>
+					{children}
+					<Toaster />
+				</body>
 			</html>
 		</ClerkProvider>
 	);
