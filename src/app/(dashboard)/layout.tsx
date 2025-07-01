@@ -16,7 +16,7 @@ const DashboardLayout = async ({ children }: Props) => {
 		<ChatProvider>
 			<div className="flex h-screen w-full">
 				<SideBar domains={authenticated.domain} />
-				<div className="w-full h-screen flex flex-col">
+				<div className="w-full h-screen flex flex-col gap-4">
 					<InfoBar />
 					{children}
 				</div>

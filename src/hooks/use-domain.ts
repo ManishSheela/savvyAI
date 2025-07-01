@@ -7,6 +7,7 @@ import { onIntegrateDomain } from "@/actions/settings";
 import { AddDomainSchema } from "@/schemas/settings.schems";
 import { z } from "zod";
 import { useUploadThing } from "@/utils/uploadthing";
+import { useUploadImage } from "./use-upload-image";
 
 type FormValues = z.infer<typeof AddDomainSchema>;
 
@@ -25,34 +26,18 @@ const useDomain = () => {
 	const [isDomain, setIsDomain] = useState<string | undefined>(undefined);
 	const router = useRouter();
 
-	const { startUpload, routeConfig } = useUploadThing("imageUploader", {
-		onClientUploadComplete: (res) => {
-			console.log("Files: ", res);
-		},
-		onUploadError: (error: Error) => {
-			toast({
-				title: "Error occured while uploading the image",
-				description: error.message,
-			});
-		},
-		onUploadBegin: (name) => {
-			console.log("Uploading: ", name);
-		},
-	});
-
+	const uploadImage = useUploadImage();
 	const onAddDomain = handleSubmit(async (values: FormValues) => {
 		setLoading(true);
 		try {
 			const image = values.image[0];
-			const response = await startUpload([image]);
-			const uploadedUrl = response?.[0]?.ufsUrl;
+			const uploadedUrl = await uploadImage(image);
 
 			if (!uploadedUrl) {
 				throw new Error("Failed to get uploaded image URL");
 			}
 
 			const domain = await onIntegrateDomain(values.domain, uploadedUrl);
-			console.log({ domain });
 			if (domain) {
 				reset();
 				toast({
